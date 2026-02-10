@@ -1,0 +1,17 @@
+.userAcc{
+    height: 40px !important;
+    width: 40px !important;
+    border-radius: 50%;
+    cursor: pointer;
+    border: 1.2px solid rgba(255, 255, 255, 0.966);
+  
+}
+
+
+
+@media(max-width:425px){
+    .userAcc{
+        height: 35px !important;
+        width: 35px !important;
+    }
+}

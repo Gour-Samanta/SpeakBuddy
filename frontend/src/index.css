@@ -1,0 +1,42 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+
+  
+  color: rgba(255, 255, 255, 0.87);
+   /* use this two color  #202b39 #1f2937; */
+  background: 
+       linear-gradient(#161d2a73),    
+      url("../appBackground.webp");
+  background-size: cover;
+  background-position: center;   
+  background-repeat: no-repeat;  
+  background-attachment: fixed;  
+
+
+
+}
+html, body {
+  margin: 0;
+  padding: 0;
+  
+}
+
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgb(51, 51, 51);
+}
+
+::-webkit-scrollbar-thumb {
+  /* background: rgba(16, 140, 255, 0.819); */
+  background: linear-gradient(#005461d5 ,#0c7779d5 ,#249e94cb ,#3bc1a8d1);
+  border-radius: 20px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+background: linear-gradient(#005461 ,#0C7779 ,#249E94 ,#3BC1A8);}
+
+

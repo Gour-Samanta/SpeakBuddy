@@ -1,0 +1,73 @@
+
+.user-dashboard{
+    width: 310px;
+    max-height:400px ;
+    /* background-color: rgba(13, 13, 27, 0.67); */
+    background-color: rgba(14, 14, 28, 0.39);
+ position: fixed;
+ right: 10px;
+ top: 5rem;
+ border-radius: 10px;
+ border: 1px solid rgba(255, 255, 255, 0.314);
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ padding: 1rem 0.2rem;
+ 
+ backdrop-filter: blur(30px);
+ -webkit-backdrop-filter: blur(30px); /*Safari support*/
+
+}
+
+.user-img{
+    height: 100px !important;
+    width: 100px !important;
+    border-radius: 50%;
+    border: 1.6px solid rgba(255, 255, 255, 0.742);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.user-name{
+    font-weight: 400;
+    margin-top: 5px;
+    color: rgb(255, 255, 255);
+    font-size: 16px;
+ 
+}
+.user-language{
+    font-weight: 400;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    row-gap: 4px;
+    column-gap: 6px;
+}
+.lang{
+    border: 0.5px solid rgba(255, 255, 255, 0.656);
+    padding: 1px 3px;
+    border-radius: 4px;
+    font-weight: 350;
+    font-size: 13px;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.164);
+}
+.user-dashboard-close{
+    position: fixed;
+    top: 4px;
+    right:8px ;
+    cursor: pointer;
+}
+
+@media(max-width:425px){
+    .user-dashboard{
+        width: 290px !important;
+        
+    }
+    .user-name{
+        font-size: 14px;
+    }
+    
+}

@@ -1,0 +1,26 @@
+.container{
+    background-color: #222c3ff7;
+    max-height: 600px;
+    width: 335px;
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    z-index: 1000;
+    padding: 0.5rem;
+    
+}
+.language-container{
+    display: flex !important;
+}
+.add-btn{
+    margin: 2rem 0rem;
+}
+
+
+@media(max-width:425px){
+    .container{
+        width: 280px;
+    }
+}

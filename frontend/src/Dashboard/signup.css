@@ -1,0 +1,133 @@
+.signup-body{
+    background-color: #1b263b;
+    position: fixed;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.signup-card{
+    height: 490px;
+    width: 360px;
+   
+    border-radius: 24px;
+    border: 1px solid rgba(255, 255, 255, 0.16);
+    background-color: #0d1b2a;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 1rem;
+
+}
+.signup-card h2{
+    font-weight: 400;
+}
+.signup-card p{
+    margin-top: -1rem;
+    font-size: 0.7rem;
+    color: #b6b6b6;
+}
+.signup-btn2{
+    width: 340px !important;
+}
+.cancel-signup{
+    cursor: pointer;
+    width: 95%;
+    display: flex;
+    justify-content: end;
+}
+.signup-inputs{
+    display: flex ;
+    flex-direction: column;
+    justify-content: center;
+}
+.input-field{
+    background-color:#1b263b !important ;
+    width: 280px;
+    height: 35px;
+    border-radius: 60px;
+    padding-left: 1rem;
+    border: none;
+    margin: 1rem 0;
+    color: white;
+}
+.input-field-password{
+    background-color:#1b263b !important ;
+    width: 240px;
+    height: 32px;
+    border-radius: 60px 0px 0px 60px;
+    padding-left: 1rem;
+    border: none;
+  
+    color: white;
+}
+.password{
+    background-color:#1b263b !important ;
+    height: 38px;
+    border-radius: 60px;
+    width: 295px;
+    border: none;
+    margin: 1rem 0;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 0.3rem 0 0;
+}
+.no-account{
+    font-size: 0.9rem;
+    font-weight: 400;
+    margin-top: 2rem;
+}
+
+.native-lang-selector{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.lang-selector{
+    height: 35px !important;
+    font-size: 0.6rem !important;
+    background-color: #172e46 !important;
+}
+
+.username{
+     background-color:#1b263b !important ;
+    width: 140px;
+    height: 35px;
+    border-radius: 60px;
+    padding-left: 1rem;
+    border: none;
+    margin: 1rem 0;
+    color: white;
+}
+
+@media (max-width:425px) {
+    .signup-card{
+    max-height: 500px;
+    width: 300px;
+    }
+    
+.input-field{
+    width: 260px;
+}
+.signup-btn2{
+    width: 280px !important;
+}
+.input-field-password{
+    width: 215px;
+}
+.password{
+     width: 260px;
+}
+.input-field{
+    width: 245px;
+}
+.username{
+    width: 120px;
+}
+
+}

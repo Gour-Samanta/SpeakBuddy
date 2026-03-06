@@ -13,7 +13,7 @@ import {useNavigate} from 'react-router-dom';
 
 
 
-export default function Login() {
+export default function Login({setIsLogged}) {
   const navigate = useNavigate();
     const [seePass , setSeePass] = useState('password');
     const [isSee , setIsSee] = useState(false);
@@ -33,6 +33,7 @@ export default function Login() {
     try{
       const res = await axios.post("http://localhost:8080/api/login" , {email , password} ,{withCredentials:true});
       toast.success(res.data.msg);
+      setIsLogged(true);
       navigate('/');
 
     } catch(err){

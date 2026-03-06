@@ -2,15 +2,28 @@ import { useEffect, useState } from "react";
 import "./hero.css";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import CallIcon from "@mui/icons-material/Call";
-import VideoCallIcon from '@mui/icons-material/VideoCall';
+import PhoneEnabledIcon from '@mui/icons-material/PhoneEnabled';
 import Badge from "@mui/material/Badge";
 import CircularProgress from '@mui/material/CircularProgress';
+import Popup from "./Popup.jsx";
+import Navbar from "./Navbar.jsx";
+import {socket} from "../Socket/Socket.js";
+import IncomingCall from "./IncomingCall.jsx";
+import Callpage from "./CallPage.jsx";
+import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
+import Tooltip from '@mui/material/Tooltip';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 
 
-export default function Hero() {
+
+export default function Hero({allOnlineUsers, setIsLogged, isLogged}) {
   const [usersData, setUsersData] = useState([]);
   const [loading , setLoading] = useState(true);
+  const [connectPopup , setConnectPopup] = useState(false);
+  const [getRemoteUserId , setGetRemoteUserId] = useState('');
+  const [incomingCall , setIncomingCall] = useState(null);
+  const [openCallRec , setOpenCallRec] = useState(false);
+
 
   const languages = [
     { id: 0, name: "All" },
@@ -30,13 +43,15 @@ export default function Hero() {
     { id: 14, name: "Urdu" },
   ];
 
+  
+  console.log(allOnlineUsers);
+
   const getUsers = async (language) => {
     const res = await axios.get(
       `http://localhost:8080/api/users/find?lang=${language}`,
       { withCredentials: true },
     );
     setUsersData(res.data.users);
-   
   };
   const findLanguage = (lang) => {
     console.log(lang);
@@ -55,13 +70,43 @@ export default function Hero() {
     })
   },[])
 //   console.log(usersData);
+const openCallOption = (id)=>{
+  setConnectPopup(!connectPopup);
+  setGetRemoteUserId(id);
+}
   
+
+  useEffect(()=>{
+    socket.on("incoming-call", (data)=>{   //callId, from , offer
+      setIncomingCall(data);
+      // console.log("incoming call : " , data);
+    });
+  },[]);
+
+  useEffect(()=>{
+  socket.on("call-ended" ,({reason})=>{ 
+  console.log("call ended " , reason);
+  setIncomingCall(null);
+  });
+  },[]);
+
+  const receiveCall=()=>{
+    setOpenCallRec(true);
+  }
+
+console.log("incoming call :  ",incomingCall);
 
 
   const imgURL = "./defaultDP.webp";
 
+
   return (
     <>
+    {openCallRec? <Callpage isCaller={false} incomingCall={incomingCall} setOpenCall={setOpenCallRec} setConnectPopup={setConnectPopup}/>:null}
+    {incomingCall? <IncomingCall incomingCall={incomingCall} receiveCall={receiveCall} setIncomingCall={setIncomingCall}/>:null}
+    <Navbar setIsLogged={setIsLogged}/>   
+    
+    {connectPopup? <Popup getRemoteUserId={getRemoteUserId} setConnectPopup={setConnectPopup}/> : null}
       <div className="main">
         <h2 className="hero">Language Exchange Network</h2>
       </div>
@@ -85,6 +130,18 @@ export default function Hero() {
       </div>
 
 
+        <div className="gini-mobile">
+          <div style={{
+            display:"flex",
+            justifyContent:"center",
+            alignItems:"center",
+            columnGap:"4px"
+          }}>
+            <AutoAwesomeIcon/>
+            <p>Hii!👋 I'm your Ai partner.</p>
+          </div>
+        </div>
+
         {loading? <div className="loading">
       <CircularProgress />
     </div> : 
@@ -98,9 +155,12 @@ export default function Hero() {
               <div className="user-card" key={ele.email}>
                 
                 <div className="user-nav-bar">
-                  <Badge color="error" variant="dot">
+                {allOnlineUsers.includes(ele._id)?  <Badge color="success" variant="dot">
                     <img src={imgURL} alt="" />
-                  </Badge>
+                  </Badge>:   <Badge color="error" variant="dot">
+                    <img src={imgURL} alt="" />
+                  </Badge>}
+          
                   <div className="user-nav">
                     <span style={{ fontWeight: "700", color: "#a0a0a0" }}>
                       {ele.username}
@@ -114,11 +174,8 @@ export default function Hero() {
                   <img src={imgURL} alt="" />
                 </div>
                 <div className="main-img">
-                 <Button variant="outlined" color="error">
-                    <VideoCallIcon /> Connect.
-                  </Button>
-                  <Button variant="outlined" color="success">
-                    <CallIcon /> Connect.
+                  <Button variant="outlined" color="success" style={{ textTransform: 'none' }} onClick={()=>{openCallOption(ele._id)}}>
+                    <PhoneEnabledIcon fontSize="small"/> Connect and talk now!
                   </Button>
                 </div>
               </div>
@@ -126,6 +183,19 @@ export default function Hero() {
           })
         )}
       </div>}
+
+      {isLogged? <Badge badgeContent={1} color="error" className="message">
+        <ChatBubbleIcon />
+       
+      </Badge>: null}
+      
+        <div className="gini-box">
+          <div className="gini-intro"><AutoAwesomeIcon/> &nbsp; Hello! </div>
+           <img className="gini" src="../public/image.png" alt="" />
+        </div>
+       
+       
+        
     </>
   );
 }

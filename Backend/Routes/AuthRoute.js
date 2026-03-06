@@ -10,7 +10,7 @@ router.post("/login" , Login);
 router.get("/logout" , Logout);
 
 router.get("/verify" ,IsLoggedIn , (req,res)=>{
-    res.json({status:true , username:req.user.username , language:req.user.language});
+    res.json({status:true , username:req.user.username , language:req.user.language , id:req.user._id});
 })
 
 module.exports = router;

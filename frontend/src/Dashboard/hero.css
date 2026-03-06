@@ -77,6 +77,58 @@
 
 }
 
+.open-connection{
+    height: 100px;
+    width: 300px;
+    background-color: aqua;
+    position: fixed;
+    z-index: 101;
+    top: 50%;
+    left: 50%;
+}
+.message{
+    position: fixed !important;
+    right: 20px !important;
+    bottom: 125px;
+    border-radius: 50%;
+    padding: 10px;
+    background: linear-gradient(135deg, #00bf50, #5be0a0);
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.394);
+    cursor: pointer;
+   
+}
+.gini-box{
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    height: 100px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+}
+.gini-intro{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid rgba(0, 0, 0, 0.524);
+    padding: 5px 4px;
+    background: linear-gradient(90deg, #a955f79d 0%, #6365f19a 100%);
+    border-radius: 10px;
+    
+}
+.gini{
+    
+    height: 100px;
+    
+}
+.gini-mobile{
+    display: none;
+}
+
+
 
 
 @media(max-width:886px){
@@ -89,13 +141,44 @@
     column-gap: 10px;
    }
    .main-img Button{
-    font-size: 0.7rem;
+    font-size: 0.85rem;
    }
+   .message{
+    bottom: 70px;
+   }
+   .gini-box{
+    display: none;
+   }
+   .gini-mobile{
+    display: block;
+   font-weight: 600;
+    background: linear-gradient(90deg, #a955f79d 0%, #6365f19a 100%);
+     box-shadow: 
+    inset 0 1px 1px rgba(255, 255, 255, 0.4), 
+    0 10px 20px -5px rgba(99, 101, 241, 0.402);
+    width: 80%;
+    margin: auto;
+     margin-top: 20px;
+     border-radius: 15px;
+      display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 5px;
+    }
+    
+
 }   
 @media (min-width:811px) and (max-width:1100px ){
     .user-card{
     width: 44vw !important;
     flex-grow: 1;
     }
+      .main-img Button{
+    font-size: 1rem !important;
+   }
+      .gini-mobile{
+    display: none;
+}
+
 }
 

@@ -3,7 +3,7 @@ import { useState } from "react";
 import "./userAcc.css";
 import Userdashboard from "./Userdashboard.jsx";
 
-export default function UserAcc({data , setIsLoggedIn }) {
+export default function UserAcc({data , setIsLoggedIn, setIsLogged }) {
   const [clickUserAcc, setClickUserAcc] = useState(false);
 
     const userIMG = data[3] || "./defaultDP.webp";
@@ -12,7 +12,7 @@ export default function UserAcc({data , setIsLoggedIn }) {
 
   return (
     <>
-    { clickUserAcc ?<Userdashboard data={data} setIsLoggedIn={setIsLoggedIn} setClickUserAcc={setClickUserAcc}/>:null}
+    { clickUserAcc ?<Userdashboard data={data} setIsLoggedIn={setIsLoggedIn} setClickUserAcc={setClickUserAcc} setIsLogged={setIsLogged}/>:null}
 
         
         <img src={userIMG} alt="user DP" className="userAcc"

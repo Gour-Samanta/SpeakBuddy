@@ -8,7 +8,7 @@ import UserAcc from "./UserAcc.jsx";
 import Badge from "@mui/material/Badge";
 
 
-export default function Navbar() {
+export default function Navbar({setIsLogged}) {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [loading , setLoading] = useState(true);
   const [data , setData] = useState([]);
@@ -41,7 +41,7 @@ console.log(isLoggedIn);
       <div className="login-btn">
         {isLoggedIn ? (
           <Badge color="success" variant="dot" badgeContent=" ">
-        <UserAcc data={data} setIsLoggedIn={setIsLoggedIn}/> 
+          <UserAcc data={data} setIsLoggedIn={setIsLoggedIn} setIsLogged={setIsLogged}/> 
         </Badge>    //passing setIsLoggedIn is impt so that after logout // the isLoggedIn state value change & reRender happend
                                                                       
         ) : (                                                

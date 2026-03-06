@@ -1,16 +1,15 @@
 import CopyrightIcon from '@mui/icons-material/Copyright';
-import Navbar from './Navbar.jsx'
 import Hero from "./hero.jsx"
 import "./home.css"
 
-export default function Home(){
+export default function Home({allOnlineUsers,isLogged}){
 
     return (
         <>
-        <Navbar/>   
-              <Hero/>
         
-              <div className='footer'><p><CopyrightIcon sx={{fontSize:"0.95rem"}}/>SpeakBuddy, 2026</p></div>    
+              <Hero allOnlineUsers={allOnlineUsers} isLogged={isLogged}/>
+        
+              <div className='footer'><p><CopyrightIcon sx={{fontSize:"0.95rem"}}/> 2026 SpeakBuddy</p></div>    
         </>
     )
 }

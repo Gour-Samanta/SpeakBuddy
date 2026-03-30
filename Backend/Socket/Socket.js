@@ -1,4 +1,4 @@
-
+require('dotenv').config();
 const { Server } = require("socket.io");
 const Chat = require("../Models/ChatsModel.js");
 

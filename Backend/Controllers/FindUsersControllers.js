@@ -30,3 +30,14 @@ module.exports.FindUsers = async(req,res)=>{
         console.log(err);
     }
 }
+module.exports.FindUser = async(req,res)=>{
+    let {id} = req.query;
+    console.log(id);
+    try{
+        const user = await User.findOne({_id:id});
+        return res.json({id: user._id ,username:user.username ,language:user.language ,image:user.image});
+      
+    }catch(err){
+        console.log(err);
+    }
+}

@@ -1,5 +1,6 @@
 
 const { Server } = require("socket.io");
+const Chat = require("../Models/ChatsModel.js");
 
 const onlineUsers = new Map();   // userId -> socketId
 const activeCalls = new Map();   // callId -> { caller, receiver }
@@ -99,6 +100,31 @@ module.exports.initSocket = (server) => {
       });
       activeCalls.delete(callId);
     })
+
+
+    // =======================
+    // CHATTING SECTION
+    // =======================
+
+    socket.on("send-messages" ,async(data)=>{
+      const {senderId , receiverId, message} = data;
+      //data store at mongodb
+      const newChat = new Chat({senderId , receiverId, message});
+      await newChat.save();
+
+      const receiverSocketId = onlineUsers.get(receiverId);
+      if(receiverSocketId){
+        io.to(receiverSocketId).emit("receive-message",
+          {
+            message,
+            senderId,
+            
+          }
+        )
+      }
+
+    }
+    )
 
     // =========================
     // DISCONNECT

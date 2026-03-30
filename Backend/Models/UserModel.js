@@ -22,7 +22,13 @@ const UserSchema = new mongoose.Schema(
         {
             type:[String],
             required:[true , "select languages."],
-        }
+        },
+        image:
+        {
+            type: String,
+            default:"https://res.cloudinary.com/df6qahoph/image/upload/v1773600404/icon-7797704_640_xgp9w1.png",
+        },
+
 
     }
 );

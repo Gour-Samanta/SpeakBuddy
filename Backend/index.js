@@ -6,6 +6,8 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const AuthRoute = require("./Routes/AuthRoute.js");
 const FindUsersRoute = require("./Routes/FindUsersRoute.js");
+const ChatsRoute  = require("./Routes/ChatsRoute.js");
+const UploadRoute = require("./Routes/UploadRoute.js");
 
 // socket.io
 const { createServer } = require('node:http');
@@ -34,6 +36,13 @@ app.use("/api" , AuthRoute);
 
 //find users
 app.use("/api/users" , FindUsersRoute);
+
+//load chats
+app.use("/chats" ,ChatsRoute );
+
+
+//update user profile image
+app.use("/api/uploads" , UploadRoute);
 
 
 

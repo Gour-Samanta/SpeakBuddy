@@ -31,7 +31,7 @@ export default function Login({setIsLogged}) {
    const handleSumbit = async(e)=>{
     e.preventDefault();
     try{
-      const res = await axios.post("http://localhost:8080/api/login" , {email , password} ,{withCredentials:true});
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/login` , {email , password} ,{withCredentials:true});
       toast.success(res.data.msg);
       setIsLogged(true);
       navigate('/');

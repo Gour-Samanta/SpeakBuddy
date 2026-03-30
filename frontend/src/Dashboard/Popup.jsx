@@ -12,6 +12,7 @@ import CallPage from "./CallPage.jsx";
 import ChatIcon from '@mui/icons-material/Chat';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import Chat from './Chat.jsx';
 
 
 
@@ -25,13 +26,14 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
   },
 }));
 
-export default function Popup({getRemoteUserId , setConnectPopup}){
+export default function Popup({getRemoteUserId , setConnectPopup, userId}){
   const navigate = useNavigate();
   const [openCall , setOpenCall] = React.useState(false);
+  const [chatOpen , setChatOpen] = React.useState(false);
 
   const handleVideoCall = async()=> {
     try{
-      const res = await axios.get("http://localhost:8080/api/verify",{withCredentials:true});
+      const res = await axios.get( `${import.meta.env.VITE_API_URL}/api/verify`,{withCredentials:true});
       if(res.data.status){
 
       setOpenCall(true);
@@ -41,13 +43,26 @@ export default function Popup({getRemoteUserId , setConnectPopup}){
     } catch(err){
       navigate("/login");
     }
-    
-    
+  }
+
+    const handleChat = async()=> {
+    try{
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/verify`,{withCredentials:true});
+      if(res.data.status){
+
+      setChatOpen(true);
+    } else{
+      navigate("/login");
+    }
+    } catch(err){
+      navigate("/login");
+    }
   }
     
    console.log( "remote user id " , getRemoteUserId);
   return (
     <>
+    {chatOpen? <Chat setChatOpen={setChatOpen} getRemoteUserId={getRemoteUserId} userId={userId}/> : null}
     {openCall? <CallPage isCaller={true} getRemoteUserId={getRemoteUserId} setOpenCall={setOpenCall} setConnectPopup={setConnectPopup}/>:
     <React.Fragment>
       <BootstrapDialog
@@ -80,7 +95,7 @@ export default function Popup({getRemoteUserId , setConnectPopup}){
                  <div className="call" style={{opacity:"0.5",cursor:"not-allowed"}}><CallIcon style={{backgroundColor:"#1d2f41eb" , borderRadius:"50%" , padding:"5px"}}/><span>Audio call</span>
                  </div>
 
-                    <div className="call"><ChatIcon style={{backgroundColor:"#1d2f41eb" , borderRadius:"50%" , padding:"5px"}}/><span>Chat</span>
+                    <div className="call" onClick={()=> {setChatOpen(true); handleChat();}}><ChatIcon style={{backgroundColor:"#1d2f41eb" , borderRadius:"50%" , padding:"5px"}} /><span>Chat</span>
                  </div>
           </div>
                 

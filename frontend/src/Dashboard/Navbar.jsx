@@ -16,10 +16,10 @@ export default function Navbar({setIsLogged}) {
 
 useEffect(() => {
     axios
-      .get("http://localhost:8080/api/verify", { withCredentials: true })
+      .get(`${import.meta.env.VITE_API_URL}/api/verify`, { withCredentials: true })
       .then((res) => {
         setIsLoggedIn(res.data.status);
-        setData([ res.data.username, res.data.language ]);
+        setData([ res.data.username, res.data.language,res.data.image,res.data.id ]);
       })
       .finally(()=>{
         setLoading(false);
@@ -27,7 +27,7 @@ useEffect(() => {
   }, []);
 
  
-console.log(isLoggedIn);
+console.log("isLoggedIn" , isLoggedIn);
 
   if(loading) return (<div className="loading-nav"></div>);
 
@@ -41,7 +41,7 @@ console.log(isLoggedIn);
       <div className="login-btn">
         {isLoggedIn ? (
           <Badge color="success" variant="dot" badgeContent=" ">
-          <UserAcc data={data} setIsLoggedIn={setIsLoggedIn} setIsLogged={setIsLogged}/> 
+          <UserAcc data={data} setData={setData} setIsLoggedIn={setIsLoggedIn} setIsLogged={setIsLogged}/> 
         </Badge>    //passing setIsLoggedIn is impt so that after logout // the isLoggedIn state value change & reRender happend
                                                                       
         ) : (                                                

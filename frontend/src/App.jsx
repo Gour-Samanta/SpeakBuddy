@@ -14,6 +14,7 @@ function App() {
 
  const [allOnlineUsers , setAllOnlineUsers] = useState([]);
  const [isLogged , setIsLogged] = useState(false);
+ const [userId , setUserId] = useState("");
 
    //socket
  useEffect(() => {
@@ -27,9 +28,10 @@ function App() {
 
 
   useEffect(()=>{
-    axios.get("http://localhost:8080/api/verify",{withCredentials:true})
+    axios.get(`${import.meta.env.VITE_API_URL}/api/verify`,{withCredentials:true})
     .then((res)=>{
       console.log("after verify: " ,res.data);
+      setUserId(res.data.id);
       if(res.data.status){
         socket.emit("user-connected" , res.data.id);
       }
@@ -46,7 +48,7 @@ function App() {
     <ToastContainer position="top-right" autoClose={4000} />
 
       <Routes>
-        <Route path='/*' element={<Home allOnlineUsers={allOnlineUsers} setIsLogged={setIsLogged} isLogged={isLogged}/>}/>
+        <Route path='/*' element={<Home allOnlineUsers={allOnlineUsers} setIsLogged={setIsLogged} isLogged={isLogged} userId={userId}/>}/>
         <Route path='/login' element={<Login setIsLogged={setIsLogged}/>}/>
         <Route path='/signup' element={<Signup/>}/>
       </Routes>

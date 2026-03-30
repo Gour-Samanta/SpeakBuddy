@@ -1,0 +1,136 @@
+.msg-box-parent {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  height: 70px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.msg-box {
+  width: 70%;
+  background-color: #1f262b;
+  height: 50px;
+  padding: 5px 10px;
+  display: flex;
+  align-items: center;
+  border-radius: 30px;
+}
+.msg-form {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+.msg-field {
+  flex: 1;
+  height: 30px;
+  background-color: #1d232800;
+  color: white;
+  border: none;
+  outline: none;
+  padding-left: 18px;
+}
+.send-msg-btn {
+  height: 45px !important;
+  width: 45px !important;
+  border-radius: 50% !important;
+  background-color: rgb(0, 151, 0);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: none;
+}
+.chats-container {
+  position: absolute;
+  top: 64px;      /* height of AppBar */
+  bottom: 70px;   /* space for message box */
+  width: 100%;
+  overflow-y: auto;
+  display: flex;
+  justify-content: center;
+  
+ 
+}
+.main-chats-sec {
+  width: 90%;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  
+  
+
+}
+.chat-topbar {
+  position: fixed !important;
+}
+.chat-container {
+  max-width: 50%;
+  word-wrap: break-word;
+  display: flex;
+  align-items: flex-start;
+  margin-top: 1rem;
+ 
+}
+.chat-container span{
+    margin: 0 .5rem 0.5rem 0.5rem;
+}
+.left{
+    align-self: flex-start;
+}
+.right{
+    align-self:flex-end ;
+    
+}
+
+
+.chats-you {
+  background-color: #ffffff1a;
+  padding: 5px 10px;
+  border-radius: 0 20px 20px 20px;
+  overflow: hidden;
+}
+.chats-me{
+    background-color:  #007bff73;
+    padding: 5px 10px;
+  border-radius: 20px 0px 20px 20px;
+  overflow: hidden;
+}
+
+.remote-user-dp{
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(252, 62, 233, 0.532);
+}
+.right img{
+  display: none;
+}
+.left img{
+  height: 20px;
+  width: 20px;
+  margin-left: 0.5rem;
+}
+
+
+@media (max-width: 810px) {
+  .msg-box {
+    width: 90%;
+  }
+  .main-chats-sec {
+    background-color: #1d232800;
+    width: 98%;
+    padding: 0;
+  }
+  .chat-container {
+  max-width: 70%;
+  }
+
+  ::-webkit-scrollbar{
+    width: 1px;
+  }
+  .remote-user-dp{
+    height: 30px;
+    width: 30px;
+  }
+}

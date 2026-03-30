@@ -7,17 +7,15 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import CloseIcon from "@mui/icons-material/Close";
 import Tooltip from "@mui/material/Tooltip";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 
 export default function Userdashboard({
   data,
+  setData,
   setIsLoggedIn,
   setClickUserAcc,
   setIsLogged,
 }) {
-  //data[3] = "https://cdn.pixabay.com/photo/2024/02/08/12/54/ai-generated-8561072_1280.png"
-  const userIMG = data[3] || "./defaultDP.webp"; // default img or user uploaded img
-
   const imageRef = useRef(null);
 
   const handleLogout = async () => {
@@ -33,9 +31,46 @@ export default function Userdashboard({
     }
   };
 
+  const handleImageUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append("image", file);
+
+  
+      axios.patch(
+        `${import.meta.env.VITE_API_URL}/api/uploads/update-image/${data[3]}`,
+        formData,
+      { withCredentials: "true"}
+      ).then((res)=>{
+     
+      setData((prev)=>{
+        const copy = [...prev];
+        copy[2] = res.data.data.image;
+        return copy;
+      })
+       console.log(res.data.data.image);
+      });
+   
+  };
+ 
+  const userIMG = data[2]; 
+  console.log("data  ",data);
+
   return (
     <div className="user-dashboard">
-<input type="file" accept="image/*" ref={imageRef} style={{display:"none"}}  name="" id="" />
+      <form action="" onChange={handleImageUpload}>
+        <input
+          type="file"
+          accept="image/*"
+          ref={imageRef}
+          style={{ display: "none" }}
+          name=""
+          id=""
+        />
+      </form>
 
       <CloseIcon
         className="user-dashboard-close"
@@ -44,7 +79,12 @@ export default function Userdashboard({
         }}
       />
       <Tooltip title="Edit image" placement="top">
-        <div className="user-img" onClick={()=>{imageRef.current.click()}}>
+        <div
+          className="user-img"
+          onClick={() => {
+            imageRef.current.click();
+          }}
+        >
           <img src={userIMG} alt="" className="user-img" />
           <AddAPhotoIcon />
         </div>
@@ -60,7 +100,7 @@ export default function Userdashboard({
               {ele}
             </div>
           );
-        })}
+        })} 
       </h4>
 
       <Button

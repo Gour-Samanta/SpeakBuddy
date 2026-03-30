@@ -1,28 +1,33 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import "./hero.css";
 import Button from "@mui/material/Button";
 import axios from "axios";
 import PhoneEnabledIcon from '@mui/icons-material/PhoneEnabled';
 import Badge from "@mui/material/Badge";
-import CircularProgress from '@mui/material/CircularProgress';
 import Popup from "./Popup.jsx";
 import Navbar from "./Navbar.jsx";
 import {socket} from "../Socket/Socket.js";
 import IncomingCall from "./IncomingCall.jsx";
 import Callpage from "./CallPage.jsx";
 import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import Tooltip from '@mui/material/Tooltip';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import ChatPage from "./ChatPage.jsx";
+import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
 
 
 
-export default function Hero({allOnlineUsers, setIsLogged, isLogged}) {
+export default function Hero({allOnlineUsers, setIsLogged, isLogged , userId}) {
+  const newMsgCount = useRef(0);
+
+
   const [usersData, setUsersData] = useState([]);
-  const [loading , setLoading] = useState(true);
   const [connectPopup , setConnectPopup] = useState(false);
   const [getRemoteUserId , setGetRemoteUserId] = useState('');
   const [incomingCall , setIncomingCall] = useState(null);
   const [openCallRec , setOpenCallRec] = useState(false);
+  const [isOpenChatPage ,setIsOpenChatPage ] = useState(false);
+  const [msgCount , setMsgCount] = useState(newMsgCount.current);
+  
 
 
   const languages = [
@@ -48,7 +53,7 @@ export default function Hero({allOnlineUsers, setIsLogged, isLogged}) {
 
   const getUsers = async (language) => {
     const res = await axios.get(
-      `http://localhost:8080/api/users/find?lang=${language}`,
+      `${import.meta.env.VITE_API_URL}/api/users/find?lang=${language}`,
       { withCredentials: true },
     );
     setUsersData(res.data.users);
@@ -61,12 +66,14 @@ export default function Hero({allOnlineUsers, setIsLogged, isLogged}) {
   };
 
   useEffect(()=>{
+    console.time("API");
     axios.get(
-      `http://localhost:8080/api/users/find?lang=All`,
+      `${import.meta.env.VITE_API_URL}/api/users/find?lang=All`,
       { withCredentials: true },
     ).then((res)=>{
+      console.timeEnd("API");
         setUsersData(res.data.users);
-         setLoading(false);
+        
     })
   },[])
 //   console.log(usersData);
@@ -94,10 +101,12 @@ const openCallOption = (id)=>{
     setOpenCallRec(true);
   }
 
-console.log("incoming call :  ",incomingCall);
-
-
-  const imgURL = "./defaultDP.webp";
+  useEffect(()=>{
+    socket.on("receive-message" , ({message , senderId})=>{
+      newMsgCount.current = newMsgCount.current+1;
+      setMsgCount(newMsgCount.current);
+    });
+  },[])
 
 
   return (
@@ -106,7 +115,7 @@ console.log("incoming call :  ",incomingCall);
     {incomingCall? <IncomingCall incomingCall={incomingCall} receiveCall={receiveCall} setIncomingCall={setIncomingCall}/>:null}
     <Navbar setIsLogged={setIsLogged}/>   
     
-    {connectPopup? <Popup getRemoteUserId={getRemoteUserId} setConnectPopup={setConnectPopup}/> : null}
+    {connectPopup? <Popup getRemoteUserId={getRemoteUserId} setConnectPopup={setConnectPopup} userId={userId} /> : null}
       <div className="main">
         <h2 className="hero">Language Exchange Network</h2>
       </div>
@@ -142,13 +151,11 @@ console.log("incoming call :  ",incomingCall);
           </div>
         </div>
 
-        {loading? <div className="loading">
-      <CircularProgress />
-    </div> : 
+    
       <div className="users-container">
         {usersData.length == 0 ? (
-          // <h4 style={{ margin: "auto" }}>Sorry, No Data Found!</h4>
-          <img src="./GIF/pudgy-penguin.gif" alt="" srcset="" style={{ margin: "auto" , width:"250px" ,opacity:"0.9"}}/>
+          <h4 style={{ margin: "auto" , display:"flex" , flexDirection:"column" , justifyContent:'center' , alignItems:"center"}}><SentimentVeryDissatisfiedIcon style={{fontSize:"3rem"}}/> Sorry, No user Found!</h4>
+          
         ) : (
           usersData.map((ele) => {
             return (
@@ -156,9 +163,9 @@ console.log("incoming call :  ",incomingCall);
                 
                 <div className="user-nav-bar">
                 {allOnlineUsers.includes(ele._id)?  <Badge color="success" variant="dot">
-                    <img src={imgURL} alt="" />
+                    <img src={ele.image} alt="" />
                   </Badge>:   <Badge color="error" variant="dot">
-                    <img src={imgURL} alt="" />
+                    <img src={ele.image} alt="" />
                   </Badge>}
           
                   <div className="user-nav">
@@ -171,7 +178,7 @@ console.log("incoming call :  ",incomingCall);
                   </div>
                 </div>
                 <div className="main-img">
-                  <img src={imgURL} alt="" />
+                  <img src={ele.image} alt="" />
                 </div>
                 <div className="main-img">
                   <Button variant="outlined" color="success" style={{ textTransform: 'none' }} onClick={()=>{openCallOption(ele._id)}}>
@@ -182,16 +189,20 @@ console.log("incoming call :  ",incomingCall);
             );
           })
         )}
-      </div>}
+      </div>
 
-      {isLogged? <Badge badgeContent={1} color="error" className="message">
+
+
+
+         {isOpenChatPage? <ChatPage setIsOpenChatPage={setIsOpenChatPage} /> : null}
+      {isLogged? <Badge badgeContent={msgCount} color="error" className="message" onClick={()=>{setIsOpenChatPage(true);}}>
         <ChatBubbleIcon />
        
       </Badge>: null}
       
         <div className="gini-box">
           <div className="gini-intro"><AutoAwesomeIcon/> &nbsp; Hello! </div>
-           <img className="gini" src="../public/image.png" alt="" />
+           <img className="gini" src="../image.png" alt="" />
         </div>
        
        

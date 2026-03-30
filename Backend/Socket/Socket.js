@@ -8,7 +8,7 @@ const activeCalls = new Map();   // callId -> { caller, receiver }
 module.exports.initSocket = (server) => {
   const io = new Server(server, {
     cors: {
-      origin: "http://localhost:5173",
+      origin: `${process.env.FRONTEND_URL}`,
       credentials: true,
     },
   });
@@ -149,73 +149,3 @@ module.exports.initSocket = (server) => {
   });
 };
 
-
-
-
-
-/*const { Server } = require("socket.io"); // Server is a class of socket.io
-const onlineUsers = new Map();
-
-module.exports.initSocket = (server) => {
-  const io = new Server(server, {
-    // io is the entire socket server which is a object
-    cors: {
-      origin: "http://localhost:5173",
-      credentials: true,
-    },
-  });
-
-  // emit is used for send data && on is used for receive data.
-
-  io.on("connection", (socket) => {
-    //when socket.io-client load ,, it auto.. connect  .... socket is a specific client
-    socket.on("user-connected", (userId) => {
-      onlineUsers.set(userId , socket.id);  //store data in key , value pair
-      console.log("🟢 connected : " ,userId , "socket_id: ", socket.id);
-      socket.userId = userId;
-
-      io.emit("onlineUsers" , Array.from(onlineUsers.keys())); // onlineUsers.Keys for iterate on keys
-    });
-
-
-    // Caller sends offer
-  socket.on("call-user", data => {
-    const receiverSocketId = onlineUsers.get(data.to);
-    if(receiverSocketId){
-       socket.to(receiverSocketId).emit("incoming-call", {
-      from: socket.id,
-      offer: data.offer
-    });
-    console.log("call-user -- " ,onlineUsers.get(data.to));
-    } 
-    else {
-      console.log("user not online..");
-    }
-  });
-
-
-// Receiver sends answer
-  socket.on("accept-call", data => {
-    socket.to(data.to).emit("call-accepted", {
-      answer: data.answer
-    });
-  });
-
-    // ICE candidate exchange
-  socket.on("ice-candidate", data => {
-    socket.to(data.to).emit("ice-candidate", {
-      candidate: data.candidate
-    });
-  });
-
-
-    socket.on("disconnect", () => {
-      // socket => one user  BUT  io => all users
-      console.log("🔴 disconnected : " ,socket.id );
-      if(socket.userId){
-        onlineUsers.delete(socket.userId);
-        io.emit("onlineUsers" , Array.from(onlineUsers.keys()))
-      }
-    });
-  });
-};*/

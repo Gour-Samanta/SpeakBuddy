@@ -4,13 +4,8 @@
   
   color: rgba(255, 255, 255, 0.87);
    /* use this two color  #202b39 #1f2937; */
-  background: 
-       linear-gradient(#161d2a73),    
-      url("../appBackground.webp");
-  background-size: cover;
-  background-position: center;   
-  background-repeat: no-repeat;  
-  background-attachment: scroll;  
+
+  background-color: #0d1520;
 
 
 

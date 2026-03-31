@@ -104,6 +104,12 @@ export async function AnswerCall(callId , fromUserId, offer, localVideoRef, remo
 
   // 6️⃣ Set remote offer
   await peer.setRemoteDescription(offer);
+  // 🔥 FLUSH ICE QUEUE
+for (let c of iceCandidateQueue) {
+  await peer.addIceCandidate(new RTCIceCandidate(c));
+}
+iceCandidateQueue = [];
+
 
   // 7️⃣ Create ANSWER
   const answer = await peer.createAnswer();
@@ -111,10 +117,13 @@ export async function AnswerCall(callId , fromUserId, offer, localVideoRef, remo
 
   // 8️⃣ Send answer
   socket.emit("accept-call", {
+    callId,
     to: fromUserId,
     answer
   });
+
 }
+
 
 // =========================
 // call end    //first send end call req to server then server cut the call from both
@@ -151,6 +160,24 @@ export const cleanUp = ()=>{
 // ==========================
 socket.on("call-accepted", async ({ answer }) => {
   await peer.setRemoteDescription(answer);
+
+  // 🔥 FLUSH ICE QUEUE
+  for (let c of iceCandidateQueue) {
+    await peer.addIceCandidate(new RTCIceCandidate(c));
+  }
+  iceCandidateQueue = [];
+});
+
+socket.on("ice-candidate", async ({ candidate }) => {
+  try {
+    if (peer && peer.remoteDescription) {
+      await peer.addIceCandidate(new RTCIceCandidate(candidate));
+    } else {
+      iceCandidateQueue.push(candidate);
+    }
+  } catch (err) {
+    console.error("ICE add error:", err);
+  }
 });
 
 

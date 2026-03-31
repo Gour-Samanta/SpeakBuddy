@@ -34,12 +34,15 @@ export default function Callpage({
   /* =========================
      START CALL
   ========================== */
-  useEffect(() => {
-    if (isCaller && getRemoteUserId) {
+  useEffect(()=>{
+      if (isCaller && getRemoteUserId) {
       // CALLER FLOW
       CreatePeer(getRemoteUserId, localVideoRef, remoteVideoRef);
       
     }
+  },[isCaller,getRemoteUserId]);
+  
+  useEffect(() => {
 
     if (!isCaller && incomingCall) {
       // RECEIVER FLOW
@@ -52,7 +55,7 @@ export default function Callpage({
        
       );
     }
-  }, []);
+  }, [incomingCall]);
 
   // =========================
   // END CALL
@@ -100,12 +103,14 @@ export default function Callpage({
                 <video
                   ref={localVideoRef}
                   autoPlay
+                  playsInline
                   muted
                   className="local-video"
                 />{" "}
                 <video
                   ref={remoteVideoRef}
                   autoPlay
+                  playsInline
                   className="remote-video"
                 />{" "}
               </div>{" "}

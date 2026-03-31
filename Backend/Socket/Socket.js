@@ -41,7 +41,7 @@ module.exports.initSocket = (server) => {
 
       socket.to(receiverSocketId).emit("incoming-call", {
         callId,
-        from: socket.userId,
+        fromUserId: socket.userId,
         offer,
       });
 

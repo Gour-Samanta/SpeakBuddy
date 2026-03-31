@@ -139,7 +139,7 @@ const openCallOption = (id)=>{
       </div>
 
 
-        <div className="gini-mobile">
+        <div className="gini-mobile" onClick={()=>{alert("Currently unavailable, please try again later.\n\nThank you.");}}>
           <div style={{
             display:"flex",
             justifyContent:"center",
@@ -200,7 +200,7 @@ const openCallOption = (id)=>{
        
       </Badge>: null}
       
-        <div className="gini-box">
+        <div className="gini-box" onClick={()=>{alert("Currently unavailable, please try again later.\n\nThank you.");}}>
           <div className="gini-intro"><AutoAwesomeIcon/> &nbsp; Hello! </div>
            <img className="gini" src="../image.png" alt="" />
         </div>

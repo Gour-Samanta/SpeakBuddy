@@ -20,7 +20,7 @@ export default function Userdashboard({
 
   const handleLogout = async () => {
     try {
-      const res = await axios.get("http://localhost:8080/api/logout", {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/logout`, {
         withCredentials: true,
       });
       setIsLoggedIn(false); // the func will trigger & component rerender

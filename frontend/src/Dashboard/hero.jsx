@@ -31,6 +31,7 @@ export default function Hero({
   const [isOpenChatPage, setIsOpenChatPage] = useState(false);
   const [msgCount, setMsgCount] = useState(newMsgCount.current);
 
+  let langRef = useRef("All");
 
   const languages = [
     { id: 0, name: "All" },
@@ -86,6 +87,7 @@ export default function Hero({
 
   };
   const findLanguage = (lang) => {
+    langRef.current = lang;
     console.log(lang);
     getUsers(lang);
   };
@@ -93,10 +95,10 @@ export default function Hero({
 
 
   
-  let counter =0; 
+ 
   useEffect(() => {
     axios
-      .get(`${import.meta.env.VITE_API_URL}/api/users/find?lang=All`, {
+      .get(`${import.meta.env.VITE_API_URL}/api/users/find?lang=${langRef.current}`, {
         withCredentials: true,
       })
       .then((res) => {

@@ -39,6 +39,9 @@
 .login-btn{
     margin-right: 1.5rem;
 }
+
+
+
 @media(max-width:425px){
     .navbar-nav img{
         height: 28px

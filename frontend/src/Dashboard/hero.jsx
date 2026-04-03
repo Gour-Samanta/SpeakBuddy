@@ -2,32 +2,34 @@ import { useEffect, useRef, useState } from "react";
 import "./hero.css";
 import Button from "@mui/material/Button";
 import axios from "axios";
-import PhoneEnabledIcon from '@mui/icons-material/PhoneEnabled';
+import PhoneEnabledIcon from "@mui/icons-material/PhoneEnabled";
 import Badge from "@mui/material/Badge";
 import Popup from "./Popup.jsx";
 import Navbar from "./Navbar.jsx";
-import {socket} from "../Socket/Socket.js";
+import { socket } from "../Socket/Socket.js";
 import IncomingCall from "./IncomingCall.jsx";
 import Callpage from "./CallPage.jsx";
-import ChatBubbleIcon from '@mui/icons-material/ChatBubble';
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import AutoAwesomeIcon from "@mui/icons-material/AutoAwesome";
 import ChatPage from "./ChatPage.jsx";
-import SentimentVeryDissatisfiedIcon from '@mui/icons-material/SentimentVeryDissatisfied';
+import ChatIcon from "@mui/icons-material/Chat";
+import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
+import Tooltip from "@mui/material/Tooltip";
 
-
-
-export default function Hero({allOnlineUsers, setIsLogged, isLogged , userId}) {
+export default function Hero({
+  allOnlineUsers,
+  setIsLogged,
+  isLogged,
+  userId,
+}) {
   const newMsgCount = useRef(0);
 
-
   const [usersData, setUsersData] = useState([]);
-  const [connectPopup , setConnectPopup] = useState(false);
-  const [getRemoteUserId , setGetRemoteUserId] = useState('');
-  const [incomingCall , setIncomingCall] = useState(null);
-  const [openCallRec , setOpenCallRec] = useState(false);
-  const [isOpenChatPage ,setIsOpenChatPage ] = useState(false);
-  const [msgCount , setMsgCount] = useState(newMsgCount.current);
-  
+  const [connectPopup, setConnectPopup] = useState(false);
+  const [getRemoteUserId, setGetRemoteUserId] = useState("");
+  const [incomingCall, setIncomingCall] = useState(null);
+  const [openCallRec, setOpenCallRec] = useState(false);
+  const [isOpenChatPage, setIsOpenChatPage] = useState(false);
+  const [msgCount, setMsgCount] = useState(newMsgCount.current);
 
 
   const languages = [
@@ -48,76 +50,160 @@ export default function Hero({allOnlineUsers, setIsLogged, isLogged , userId}) {
     { id: 14, name: "Urdu" },
   ];
 
-  
-  console.log(allOnlineUsers);
+  console.log("all online users - " ,allOnlineUsers);
 
   const getUsers = async (language) => {
     const res = await axios.get(
       `${import.meta.env.VITE_API_URL}/api/users/find?lang=${language}`,
       { withCredentials: true },
     );
-    setUsersData(res.data.users);
+    
+    let data = res.data.users;
+    setUsersData(() => {
+      let map = new Map();
+      for(let i=0 ; i<data.length ; i++){
+        map.set(data[i]._id , data[i]);
+      }
+
+      let newData = [];
+      for(let i =0;i<allOnlineUsers.length ; i++){
+          if(map.has(allOnlineUsers[i])){
+            newData.unshift(map.get(allOnlineUsers[i]));
+            map.delete(allOnlineUsers[i]);
+          } 
+      }
+
+
+        for(let val of map.values()){
+        newData.push(val);
+      }
+
+      return newData;
+    }
+
+    );
+    
+
   };
   const findLanguage = (lang) => {
     console.log(lang);
     getUsers(lang);
-
-
   };
 
-  useEffect(()=>{
-    console.time("API");
-    axios.get(
-      `${import.meta.env.VITE_API_URL}/api/users/find?lang=All`,
-      { withCredentials: true },
-    ).then((res)=>{
-      console.timeEnd("API");
-        setUsersData(res.data.users);
+
+
+  
+  let counter =0; 
+  useEffect(() => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/api/users/find?lang=All`, {
+        withCredentials: true,
+      })
+      .then((res) => {
+    
+        //========> allOnlineUsers on top Algo
+      let data = res.data.users;
+      setUsersData(() => {
+      let map = new Map();
+      for(let i=0 ; i<data.length ; i++){
+        map.set(data[i]._id , data[i]);
+      }
+
+      let newData = [];
+      for(let i =0;i<allOnlineUsers.length ; i++){
+          if(map.has(allOnlineUsers[i])){
+            newData.unshift(map.get(allOnlineUsers[i]));
+            map.delete(allOnlineUsers[i]);
+          } 
+      }
+
+      for(let val of map.values()){
+        newData.push(val);
+      }
+      
+      return newData;
+    }
+
+    );
         
-    })
-  },[])
-//   console.log(usersData);
-const openCallOption = (id)=>{
-  setConnectPopup(!connectPopup);
-  setGetRemoteUserId(id);
-}
+
+      });
+  }, [allOnlineUsers]);
   
 
-  useEffect(()=>{
-    socket.on("incoming-call", (data)=>{   //callId, from , offer
+  const openCallOption = (id) => {
+    setConnectPopup(!connectPopup);
+    setGetRemoteUserId(id);
+  };
+
+  useEffect(() => {
+    socket.on("incoming-call", (data) => {
+      //callId, from , offer
       setIncomingCall(data);
       // console.log("incoming call : " , data);
     });
-  },[]);
+  }, []);
 
-  useEffect(()=>{
-  socket.on("call-ended" ,({reason})=>{ 
-  console.log("call ended " , reason);
-  setIncomingCall(null);
-  });
-  },[]);
+  useEffect(() => {
+    socket.on("call-ended", ({ reason }) => {
+      console.log("call ended ", reason);
+      setIncomingCall(null);
+    });
+  }, []);
 
-  const receiveCall=()=>{
+  const receiveCall = () => {
     setOpenCallRec(true);
-  }
+  };
 
-  useEffect(()=>{
-    socket.on("receive-message" , ({message , senderId})=>{
-      newMsgCount.current = newMsgCount.current+1;
+  useEffect(() => {
+    socket.on("receive-message", ({ message, senderId }) => {
+      newMsgCount.current = newMsgCount.current + 1;
       setMsgCount(newMsgCount.current);
     });
-  },[])
+  }, []);
 
+
+  console.log("user data " , usersData);
 
   return (
     <>
-    {openCallRec? <Callpage isCaller={false} incomingCall={incomingCall} setOpenCall={setOpenCallRec} setConnectPopup={setConnectPopup}/>:null}
-    {incomingCall? <IncomingCall incomingCall={incomingCall} receiveCall={receiveCall} setIncomingCall={setIncomingCall}/>:null}
-    <Navbar setIsLogged={setIsLogged}/>   
-    
-    {connectPopup? <Popup getRemoteUserId={getRemoteUserId} setConnectPopup={setConnectPopup} userId={userId} /> : null}
+      {openCallRec ? (
+        <Callpage
+          isCaller={false}
+          incomingCall={incomingCall}
+          setOpenCall={setOpenCallRec}
+          setConnectPopup={setConnectPopup}
+        />
+      ) : null}
+      {incomingCall ? (
+        <IncomingCall
+          incomingCall={incomingCall}
+          receiveCall={receiveCall}
+          setIncomingCall={setIncomingCall}
+        />
+      ) : null}
+      <Navbar setIsLogged={setIsLogged} />
+
+      {connectPopup ? (
+        <Popup
+          getRemoteUserId={getRemoteUserId}
+          setConnectPopup={setConnectPopup}
+          userId={userId}
+        />
+      ) : null}
       <div className="main">
         <h2 className="hero">Language Exchange Network</h2>
+      </div>
+
+      <div
+        className="gini-box"
+        onClick={() => {
+          alert("Currently unavailable, please try again later.\n\nThank you.");
+        }}
+      >
+        <div className="gini-intro">
+          <AutoAwesomeIcon /> &nbsp; Hello! meet your AI partner.
+        </div>
       </div>
 
       <div className="language-filter">
@@ -138,36 +224,56 @@ const openCallOption = (id)=>{
         })}
       </div>
 
-
-        <div className="gini-mobile" onClick={()=>{alert("Currently unavailable, please try again later.\n\nThank you.");}}>
-          <div style={{
-            display:"flex",
-            justifyContent:"center",
-            alignItems:"center",
-            columnGap:"4px"
-          }}>
-            <AutoAwesomeIcon/>
-            <p>Hii!👋 I'm your Ai partner.</p>
-          </div>
+      <div
+        className="gini-mobile"
+        onClick={() => {
+          alert("Currently unavailable, please try again later.\n\nThank you.");
+        }}
+      >
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            columnGap: "4px",
+          }}
+        >
+          <AutoAwesomeIcon />
+          <p>Hii!👋 I'm your Ai partner.</p>
         </div>
+      </div>
 
-    
+      
+
       <div className="users-container">
         {usersData.length == 0 ? (
-          <h4 style={{ margin: "auto" , display:"flex" , flexDirection:"column" , justifyContent:'center' , alignItems:"center"}}><SentimentVeryDissatisfiedIcon style={{fontSize:"3rem"}}/> Sorry, No user Found!</h4>
-          
+          <h4
+            style={{
+              margin: "auto",
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <SentimentVeryDissatisfiedIcon style={{ fontSize: "3rem" }} />{" "}
+            Sorry, No user Found!
+          </h4>
         ) : (
           usersData.map((ele) => {
             return (
               <div className="user-card" key={ele.email}>
-                
                 <div className="user-nav-bar">
-                {allOnlineUsers.includes(ele._id)?  <Badge color="success" variant="dot">
-                    <img src={ele.image} alt="" />
-                  </Badge>:   <Badge color="error" variant="dot">
-                    <img src={ele.image} alt="" />
-                  </Badge>}
-          
+                  {allOnlineUsers.includes(ele._id) ? (
+                    <Badge color="success" variant="dot">
+                      <img src={ele.image} alt="" />
+                    </Badge>
+                  ) : (
+                    <Badge color="error" variant="dot">
+                      <img src={ele.image} alt="" />
+                    </Badge>
+                  )}
+
                   <div className="user-nav">
                     <span style={{ fontWeight: "700", color: "#a0a0a0" }}>
                       {ele.username}
@@ -181,8 +287,15 @@ const openCallOption = (id)=>{
                   <img src={ele.image} alt="" />
                 </div>
                 <div className="main-img">
-                  <Button variant="outlined" color="success" style={{ textTransform: 'none' }} onClick={()=>{openCallOption(ele._id)}}>
-                    <PhoneEnabledIcon fontSize="small"/> Connect and talk now!
+                  <Button
+                    variant="outlined"
+                    color="success"
+                    style={{ textTransform: "none" }}
+                    onClick={() => {
+                      openCallOption(ele._id);
+                    }}
+                  >
+                    <PhoneEnabledIcon fontSize="small" /> Connect and talk now!
                   </Button>
                 </div>
               </div>
@@ -191,22 +304,23 @@ const openCallOption = (id)=>{
         )}
       </div>
 
-
-
-
-         {isOpenChatPage? <ChatPage setIsOpenChatPage={setIsOpenChatPage} /> : null}
-      {isLogged? <Badge badgeContent={msgCount} color="error" className="message" onClick={()=>{setIsOpenChatPage(true);}}>
-        <ChatBubbleIcon />
-       
-      </Badge>: null}
-      
-        <div className="gini-box" onClick={()=>{alert("Currently unavailable, please try again later.\n\nThank you.");}}>
-          <div className="gini-intro"><AutoAwesomeIcon/> &nbsp; Hello! </div>
-           <img className="gini" src="../image.png" alt="" />
-        </div>
-       
-       
-        
+      {isOpenChatPage ? (
+        <ChatPage setIsOpenChatPage={setIsOpenChatPage} />
+      ) : null}
+      {isLogged ? (
+        <Badge
+          badgeContent={msgCount}
+          color="error"
+          className="message"
+          onClick={() => {
+            setIsOpenChatPage(true);
+          }}
+        >
+          <Tooltip title="New messages">
+            <ChatIcon />
+          </Tooltip>
+        </Badge>
+      ) : null}
     </>
   );
 }

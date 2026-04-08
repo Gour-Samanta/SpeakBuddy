@@ -31,6 +31,10 @@ mongoose.connect(process.env.MONGO_URL)
     console.log("DB connected.");
 })
 
+app.get("/", (req, res) => {
+    res.send("Backend is running 🚀");
+});
+
 //auth
 app.use("/api" , AuthRoute);
 

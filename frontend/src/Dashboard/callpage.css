@@ -4,7 +4,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 95vh;
+    height: 100vh;
     width: 100vw;
     position: fixed;
     top: 0;
@@ -97,7 +97,7 @@ justify-content: center;
 @media (min-width:426px) and (max-width:886px){
     .call-box{
         width: 80vw;
-        height: 95vh;
+        height: 90vh;
     }
     .incoming-call-notify{
         width: 90%;
@@ -107,7 +107,7 @@ justify-content: center;
 @media(max-width:425px){
     .call-box{
         width: 96vw;
-        height: 95vh;
+        height: 90vh;
     }
     .incoming-call-notify{
         width: 90%;

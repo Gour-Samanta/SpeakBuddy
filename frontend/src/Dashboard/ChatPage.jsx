@@ -70,7 +70,9 @@ export default function ChatPage({ setIsOpenChatPage, userId }) {
             sx: {
               background: "linear-gradient(#0B141A,#111B21)",
               color: "#fff",
-              width: "100%",
+              width: "94vw",
+              margin: 0,
+
               overflowX: "hidden",
               border: "1px solid #ffffff21",
             },

@@ -55,8 +55,13 @@ export default function Navbar({ setIsLogged }) {
           }}
         />
       ) : (
-       <div> <img src="../logo1.png" alt="" />
-          <img src="../logo2.png" alt="" /></div>
+       <div className="logo-container"> 
+       <img src="../logo.png" alt="" />
+              <div className="logo-right">
+                <h1 className="logo-name">SpeakBuddy</h1>
+                <div className="logo-name-bottom">Improve Your Speaking..</div>
+              </div>
+          </div>
          
        
       )}

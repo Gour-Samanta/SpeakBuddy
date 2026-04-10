@@ -34,23 +34,64 @@
     margin-left: 0.7rem;
 }
 .navbar-nav img{
-    height: 35px
+    
+    height: 45px
 }
+.logo-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.logo-right{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+.logo-name{
+    font-weight: 400;
+    font-size: 1.4rem;
+    margin: 0;
+  font-family: 'Poppins', sans-serif;
+}
+.logo-name-bottom{
+    font-size: 0.52rem;
+    padding: 0;
+    color: rgba(239, 239, 239, 0.57);
+    margin-top:-4px ;
+    
+}
+
+
+
 .login-btn{
     margin-right: 1.5rem;
 }
 
 
 
+
+
 @media(max-width:425px){
     .navbar-nav img{
-        height: 28px
+        height: 35px
 }
 .login-btn{
     font-size: 12px !important;
 }
 .login-icon{
-    font-size: 14px !important;
+    font-size: 18px !important;
+}
+.logo-name{
+    font-weight: 400;
+    font-size: 1.2rem;
+ 
+  
+}
+.logo-name-bottom{
+    font-size: 0.5rem;
+    
 }
 
 }

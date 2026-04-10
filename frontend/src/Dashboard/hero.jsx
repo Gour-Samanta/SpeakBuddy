@@ -282,10 +282,10 @@ export default function Hero({
                   )}
 
                   <div className="user-nav">
-                    <span style={{ fontWeight: "700", color: "#a0a0a0" }} className="name">
+                    <span style={{ fontWeight: "700", color: "#bebebe" }} className="name">
                       {ele.username}
                     </span>
-                    <span style={{ color: "#b2b2b2" }}>
+                    <span style={{ color: "#acacace6" }}>
                       {ele.language.join(" + ")}
                     </span>
                   </div>

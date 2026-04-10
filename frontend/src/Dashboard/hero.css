@@ -41,11 +41,7 @@
     flex-direction: column;
     column-gap: 10px;
 }
-.name{
-     font-family: "Lucida Console", "Courier New", monospace;
-     font-weight: 600 !important;
-     font-size: 1rem;
-}
+
 .user-nav-bar{
     display: flex;
     column-gap: 10px;

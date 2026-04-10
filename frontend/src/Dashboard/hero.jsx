@@ -30,6 +30,7 @@ export default function Hero({
   const [openCallRec, setOpenCallRec] = useState(false);
   const [isOpenChatPage, setIsOpenChatPage] = useState(false);
   const [msgCount, setMsgCount] = useState(newMsgCount.current);
+  const [getRemoteUserIdMsg ,setGetRemoteUserIdMsg ] = useState({});
 
   let langRef = useRef("All");
 
@@ -160,12 +161,16 @@ export default function Hero({
   useEffect(() => {
     socket.on("receive-message", ({ message, senderId }) => {
       newMsgCount.current = newMsgCount.current + 1;
+      setGetRemoteUserIdMsg({senderId, message});
+      console.log("getRemoteUserIdMsg ", getRemoteUserIdMsg);
       setMsgCount(newMsgCount.current);
     });
   }, []);
 
 
-  console.log("user data " , usersData);
+  // console.log("user data " , usersData);
+
+
 
   return (
     <>
@@ -307,8 +312,9 @@ export default function Hero({
       </div>
 
       {isOpenChatPage ? (
-        <ChatPage setIsOpenChatPage={setIsOpenChatPage} />
+        <ChatPage setIsOpenChatPage={setIsOpenChatPage} userId={userId}/>
       ) : null}
+
       {isLogged ? (
         <Badge
           badgeContent={msgCount}
@@ -316,9 +322,11 @@ export default function Hero({
           className="message"
           onClick={() => {
             setIsOpenChatPage(true);
+            newMsgCount.current =0;
+            setMsgCount(0);
           }}
         >
-          <Tooltip title="New messages">
+          <Tooltip title="New messages" placement="top">
             <ChatIcon />
           </Tooltip>
         </Badge>

@@ -1,0 +1,27 @@
+.remote{
+    display: flex;
+    align-items: center;
+}
+.remote-body{
+
+background-color: rgba(87, 184, 184, 0.034);
+border-radius: 15px;
+padding:3px 7px;
+}
+.remote-name{
+   font-family: "Lucida Console", "Courier New", monospace;
+}
+.remote-last-msg{
+    color: rgba(217, 217, 217, 0.626);
+    font-size: 0.9rem;
+    white-space:nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 220px;
+}
+
+.remote-profile{
+    height: 30px;
+    width: 30px;
+    border-radius: 50%;
+}

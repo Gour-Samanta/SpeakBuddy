@@ -9,6 +9,7 @@ const FindUsersRoute = require("./Routes/FindUsersRoute.js");
 const ChatsRoute  = require("./Routes/ChatsRoute.js");
 const UploadRoute = require("./Routes/UploadRoute.js");
 
+
 // socket.io
 const { createServer } = require('node:http');
 const server = createServer(app);
@@ -43,6 +44,9 @@ app.use("/api/users" , FindUsersRoute);
 
 //load chats
 app.use("/chats" ,ChatsRoute );
+
+//load all chatted user
+app.use("/c" , ChatsRoute);
 
 
 //update user profile image

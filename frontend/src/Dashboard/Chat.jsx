@@ -64,12 +64,15 @@ export default function Chat({setChatOpen, getRemoteUserId, userId}){
       keyRef.current+=1;
       setUserChat((prev)=>[...prev , {id: userData.id, msg:message , key :keyRef.current }]);
 
+      
+
       socket.emit("send-messages" , 
         {
           senderId:userId,
           receiverId:getRemoteUserId,
           message:message,
-          
+          sender:userId,
+          receiver:getRemoteUserId,
         }
       );
 
@@ -83,9 +86,23 @@ export default function Chat({setChatOpen, getRemoteUserId, userId}){
            keyRef.current+=1;
         setUserChat((prev)=>[...prev , {id: userData.id, msg:message , key :keyRef.current }]);
         }
-       
-      })
-    },[])
+        socket.emit("markAsRead" , {
+          senderId:senderId,
+          
+      });
+   
+      });
+
+      return ()=> socket.off("receive-message");
+    },[getRemoteUserId , userData]);
+
+    useEffect(()=>{
+           socket.emit("markAsRead" , {
+          senderId:getRemoteUserId,
+      });
+      
+      return ()=> socket.off("markAsRead");
+    },[]);
 
     useEffect(()=>{
       endChatRef.current?.scrollIntoView({ behavior:"smooth"});

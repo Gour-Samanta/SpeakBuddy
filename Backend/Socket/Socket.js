@@ -107,9 +107,9 @@ module.exports.initSocket = (server) => {
     // =======================
 
     socket.on("send-messages" ,async(data)=>{
-      const {senderId , receiverId, message} = data;
+      const {senderId , receiverId, message , sender , receiver} = data;
       //data store at mongodb
-      const newChat = new Chat({senderId , receiverId, message});
+      const newChat = new Chat({senderId , receiverId, message,sender , receiver });
       await newChat.save();
 
       const receiverSocketId = onlineUsers.get(receiverId);
@@ -123,8 +123,23 @@ module.exports.initSocket = (server) => {
         )
       }
 
+
+
     }
     )
+
+    socket.on("markAsRead" , async({senderId})=>{
+      await Chat.updateMany(
+        {
+          senderId:senderId,
+          receiverId: socket.userId,
+          isRead:false,
+        },
+        {
+          isRead:true,
+        }
+      )
+    });
 
     // =========================
     // DISCONNECT

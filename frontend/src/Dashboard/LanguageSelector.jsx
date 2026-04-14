@@ -80,12 +80,12 @@ export default function LanguageSelector({handleLanguage , handleClick}) {
         control={
           <Checkbox
             sx={{ color: "white" }}
-            value="Russion"
+            value="Russian"
             onChange={handleChange}
-            checked={languages.includes("Russion")}
+            checked={languages.includes("Russian")}
           />
         }
-        label="Russion"
+        label="Russian"
       />
           <FormControlLabel
         control={

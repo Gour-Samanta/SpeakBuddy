@@ -43,7 +43,7 @@ export default function Userdashboard({
       axios.patch(
         `${import.meta.env.VITE_API_URL}/api/uploads/update-image/${data[3]}`,
         formData,
-      { withCredentials: "true"}
+      { withCredentials: true}
       ).then((res)=>{
      
       setData((prev)=>{

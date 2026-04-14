@@ -19,7 +19,7 @@ const ChatSchema = new mongoose.Schema({
   timeStamp: {
     type: Date,
     default: Date.now,
-    expires: 60*60*24*3,
+    expires: 60*60*24*5,
   },
 });
 const Chat = mongoose.model("Chat", ChatSchema);

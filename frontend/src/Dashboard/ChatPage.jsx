@@ -122,6 +122,11 @@ export default function ChatPage({ setIsOpenChatPage, userId }) {
                 borderRadius: "15px",
                 margin: "10px 0",
               }}
+                  onClick={() => {
+                  alert(
+                    "Currently unavailable, please try again later.\n\nThank you.",
+                  );
+                }}
             >
               <AutoAwesomeIcon
                 style={{
@@ -131,16 +136,12 @@ export default function ChatPage({ setIsOpenChatPage, userId }) {
                   height: "30px",
                   width: "30px",
                 }}
+                
               />
               &nbsp; &nbsp;&nbsp;&nbsp;
               <div
                 style={{ color: "rgb(28, 234, 172)" }}
                 className="remote-name"
-                onClick={() => {
-                  alert(
-                    "Currently unavailable, please try again later.\n\nThank you.",
-                  );
-                }}
               >
                 Jini Ai
               </div>

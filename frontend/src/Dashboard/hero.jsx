@@ -41,7 +41,7 @@ export default function Hero({
     { id: 3, name: "Hindi" },
     { id: 4, name: "Tamil" },
     { id: 5, name: "Spanish" },
-    { id: 6, name: "Russion" },
+    { id: 6, name: "Russian" },
     { id: 7, name: "Punjabi" },
     { id: 8, name: "French" },
     { id: 9, name: "German" },

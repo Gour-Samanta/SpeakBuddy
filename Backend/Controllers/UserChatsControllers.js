@@ -11,7 +11,7 @@ module.exports.UserChatsControllers = async(req,res)=>{
             {senderId:sender , receiverId:receiver},
             {senderId:receiver , receiverId:sender}
         ]
-    }).sort({timestamp:1});
+    }).sort({timeStamp:1});
     res.json(allChats);
     
    } catch(err){

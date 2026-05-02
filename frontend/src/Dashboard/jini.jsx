@@ -6,15 +6,15 @@ import "./jini.css";
 export default function Jini({ setOpenCall }) {
   const vapiRef = useRef(null);
 
-  useEffect(() => {
-      // Initialize Vapi when the component mounts
-      vapiRef.current = new Vapi(`${import.meta.env.VITE_VAPI_API_KEY}`);
-      vapiRef.current.start(`${import.meta.env.VITE_VAPI_ASS_ID}`);
+//   useEffect(() => {
+//       // Initialize Vapi when the component mounts
+//       vapiRef.current = new Vapi(`${import.meta.env.VITE_VAPI_API_KEY}`);
+//       vapiRef.current.start(`${import.meta.env.VITE_VAPI_ASS_ID}`);
 
-      // Clean up Vapi when the component unmounts
-      return () => {
-        vapiRef.current?.stop();
-      }},[]);
+//       // Clean up Vapi when the component unmounts
+//       return () => {
+//         vapiRef.current?.stop();
+//       }},[]);
 
   const endJiniCall = () => {
     vapiRef.current?.stop();
@@ -25,7 +25,7 @@ export default function Jini({ setOpenCall }) {
     <div className="jini-call">
       <div className="jini-call-inner">
         <video
-          src="https://res.cloudinary.com/df6qahoph/video/upload/v1777708857/download-reverse-videoboltnet_7kxq1N9O_online-video-cutter.com_xn8ayw.mp4"
+          src="https://res.cloudinary.com/df6qahoph/video/upload/v1777710134/download-reverse-videoboltnet_7kxq1N9O_online-video-cutter.com_wbychz.mp4"
           autoPlay
           loop
           className="animated-ai-voice"

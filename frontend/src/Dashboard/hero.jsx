@@ -15,6 +15,9 @@ import ChatIcon from "@mui/icons-material/Chat";
 import SentimentVeryDissatisfiedIcon from "@mui/icons-material/SentimentVeryDissatisfied";
 import Tooltip from "@mui/material/Tooltip";
 
+import Jini from "./jini.jsx";
+
+
 export default function Hero({
   allOnlineUsers,
   setIsLogged,
@@ -31,6 +34,7 @@ export default function Hero({
   const [isOpenChatPage, setIsOpenChatPage] = useState(false);
   const [msgCount, setMsgCount] = useState(newMsgCount.current);
   const [getRemoteUserIdMsg ,setGetRemoteUserIdMsg ] = useState({});
+  const [openCall , setOpenCall] = useState(false);
 
   let langRef = useRef("All");
 
@@ -170,10 +174,14 @@ export default function Hero({
 
   // console.log("user data " , usersData);
 
+  const startGiniCall = () => {
+    setOpenCall(true);
+  }
 
 
   return (
     <>
+  {openCall ?   <Jini setOpenCall={setOpenCall}/> : null}
       {openCallRec ? (
         <Callpage
           isCaller={false}
@@ -205,7 +213,8 @@ export default function Hero({
       <div
         className="gini-box"
         onClick={() => {
-          alert("Currently unavailable, please try again later.\n\nThank you.");
+          // alert("Currently unavailable, please try again later.\n\nThank you.");
+           startGiniCall();
         }}
       >
         <div className="gini-intro">
@@ -234,7 +243,8 @@ export default function Hero({
       <div
         className="gini-mobile"
         onClick={() => {
-          alert("Currently unavailable, please try again later.\n\nThank you.");
+          // alert("Currently unavailable, please try again later.\n\nThank you.");
+          startGiniCall();
         }}
       >
         <div

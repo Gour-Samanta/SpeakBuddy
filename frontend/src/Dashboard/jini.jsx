@@ -6,15 +6,15 @@ import "./jini.css";
 export default function Jini({ setOpenCall }) {
   const vapiRef = useRef(null);
 
-//   useEffect(() => {
-//       // Initialize Vapi when the component mounts
-//       vapiRef.current = new Vapi(`${import.meta.env.VITE_VAPI_API_KEY}`);
-//       vapiRef.current.start(`${import.meta.env.VITE_VAPI_ASS_ID}`);
+  useEffect(() => {
+      // Initialize Vapi when the component mounts
+      vapiRef.current = new Vapi(`${import.meta.env.VITE_VAPI_API_KEY}`);
+      vapiRef.current.start(`${import.meta.env.VITE_VAPI_ASS_ID}`);
 
-//       // Clean up Vapi when the component unmounts
-//       return () => {
-//         vapiRef.current?.stop();
-//       }},[]);
+      // Clean up Vapi when the component unmounts
+      return () => {
+        vapiRef.current?.stop();
+      }},[]);
 
   const endJiniCall = () => {
     vapiRef.current?.stop();

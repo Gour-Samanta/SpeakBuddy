@@ -65,6 +65,7 @@ export default function Hero({
     );
     
     let data = res.data.users;
+    console.log("data", data);
     setUsersData(() => {
       let map = new Map();
       for(let i=0 ; i<data.length ; i++){

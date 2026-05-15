@@ -25,7 +25,7 @@ module.exports.Signup = async(req,res)=>{
 
   
     const user = new User({email , username , password , language});
-    await user.save();     //save the user into DB
+    await user.save();     //save the user into db
 
     const token = createSecretToken(user._id);
     res.cookie("token" , token , {

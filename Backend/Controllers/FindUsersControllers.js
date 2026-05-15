@@ -9,22 +9,22 @@ module.exports.FindUsers = async(req,res)=>{
         if(!token){
             let users;
             if(lang == "All"){
-                users = await User.find({});
+                users = await User.find({}).select("_id username language image").lean();
             }else{
-                users = await User.find({language:lang});
+                users = await User.find({language:lang}).select("_id username language image").lean();
                 
             }
               return res.json({users})
             
         }
-        const decode = jwt.verify(token , process.env.TOKEN_KEY );
-          const user = await User.findById(decode.id);
+        const {id} = jwt.verify(token , process.env.TOKEN_KEY );
+        //   const user = await User.findById(decode.id);
 
         if(lang === "All"){
-             const users = await User.find({ _id : {$ne : user._id}});
+             const users = await User.find({ _id : {$ne : id}}).select("_id username language image").lean();
              return res.json({users})
         }
-        const users = await User.find({ _id : {$ne : user._id} ,language:lang});
+        const users = await User.find({ _id : {$ne : id} ,language:lang}).select("_id username language image").lean();
         res.json({users});
     }catch(err){
         console.log(err);
@@ -32,9 +32,9 @@ module.exports.FindUsers = async(req,res)=>{
 }
 module.exports.FindUser = async(req,res)=>{
     let {id} = req.query;
-    console.log(id);
+    // console.log(id);
     try{
-        const user = await User.findOne({_id:id});
+        const user = await User.findOne({_id:id}).select("_id username language image").lean();
         return res.json({id: user._id ,username:user.username ,language:user.language ,image:user.image});
       
     }catch(err){

@@ -10,8 +10,10 @@ module.exports.FindUsers = async(req,res)=>{
             let users;
             if(lang == "All"){
                 users = await User.find({}).select("_id username language image").lean();
+                // lean() returning plain JavaScript objects instead of heavy Mongoose Documents improve query performance
             }else{
                 users = await User.find({language:lang}).select("_id username language image").lean();
+
                 
             }
               return res.json({users})
@@ -22,6 +24,8 @@ module.exports.FindUsers = async(req,res)=>{
 
         if(lang === "All"){
              const users = await User.find({ _id : {$ne : id}}).select("_id username language image").lean();
+             // lean() returning plain JavaScript objects instead of heavy Mongoose Documents improve query performance
+             
              return res.json({users})
         }
         const users = await User.find({ _id : {$ne : id} ,language:lang}).select("_id username language image").lean();

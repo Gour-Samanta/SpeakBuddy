@@ -107,7 +107,7 @@ module.exports.initSocket = (server) => {
     // =======================
 
     socket.on("send-messages" ,async(data)=>{
-      const {senderId , receiverId, message , sender , receiver} = data;
+      const {senderId , receiverId, message , sender , receiver,startTime} = data;
       //data store at mongodb
       const newChat = new Chat({senderId , receiverId, message,sender , receiver });
       await newChat.save();
@@ -118,6 +118,7 @@ module.exports.initSocket = (server) => {
           {
             message,
             senderId,
+            startTime,
             
           }
         )

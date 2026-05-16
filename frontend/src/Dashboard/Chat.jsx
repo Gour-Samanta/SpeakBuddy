@@ -75,14 +75,21 @@ export default function Chat({ setChatOpen, getRemoteUserId, userId }) {
       message: message,
       sender: userId,
       receiver: getRemoteUserId,
-    });
+      startTime: Date.now(),
+    },
+   
+  );
 
     setMessage("");
   };
   useEffect(() => {
     socket.on("receive-message", (data) => {
-      console.log(data);
-      const { message, senderId } = data;
+      // console.log(data);
+      const { message, senderId,startTime } = data;
+      
+       const latency = Date.now() - startTime;
+       console.log("End-to-End Latency:", latency, "ms");
+
       if (senderId === getRemoteUserId) {
         keyRef.current += 1;
         setUserChat((prev) => [

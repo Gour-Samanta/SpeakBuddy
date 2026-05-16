@@ -13,13 +13,18 @@ function App() {
   const [isLogged, setIsLogged] = useState(false);
   const [userId, setUserId] = useState("");
 
-  //socket
+  socket
   useEffect(() => {
+    socket.connect();
     const handleOnlineUsers = (onlineUsers) => {
       setAllOnlineUsers(onlineUsers);
     };
 
     socket.on("onlineUsers", handleOnlineUsers);
+
+    return () => {
+      socket.off("onlineUsers", handleOnlineUsers);
+    };
   }, []);
 
   useEffect(() => {
@@ -32,10 +37,12 @@ function App() {
         setUserId(res.data.id);
         if (res.data.status) {
           socket.emit("user-connected", res.data.id);
+          setIsLogged(true);
+        } else {
+          setIsLogged(false);
         }
-        setIsLogged(true);
       });
-  }, [isLogged]);
+  }, []);
 
   console.log("is logged ", isLogged);
 
